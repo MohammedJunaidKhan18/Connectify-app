@@ -24,7 +24,7 @@ transporter.verify((error, success) => {
 // Function to send email
 export const sendEmail = async (to, subject, html) => {
   const mailOptions = {
-    from: `"Connectify" <${process.env.SENDER_EMAIL}>`,
+    from: `"Connectify" <${process.env.SMTP_USER}>`,
     to,
     subject,
     html,
