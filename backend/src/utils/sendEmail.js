@@ -43,10 +43,56 @@
 
 
 
+// import Brevo from "@getbrevo/brevo";
+// import "dotenv/config.js";
+
+// const brevoClient = new Brevo.TransactionalEmailsApi();
+// brevoClient.setApiKey(
+//   Brevo.TransactionalEmailsApiApiKeys.apiKey,
+//   process.env.BREVO_API_KEY
+// );
+
+// export const sendEmail = async (to, subject, html) => {
+//   const emailData = {
+//     sender: { email: process.env.SMTP_USER, name: "Connectify" },
+//     to: [{ email: to }],
+//     subject: subject,
+//     htmlContent: html,
+//   };
+
+//   try {
+//     const response = await brevoClient.sendTransacEmail(emailData);
+//     console.log(" Email sent successfully:", response.messageId);
+//   } catch (error) {
+//     console.error(" Email sending failed:", error.response?.body || error);
+//     throw error;
+//   }
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import Brevo from "@getbrevo/brevo";
 import "dotenv/config.js";
 
 const brevoClient = new Brevo.TransactionalEmailsApi();
+
+// Set API Key
 brevoClient.setApiKey(
   Brevo.TransactionalEmailsApiApiKeys.apiKey,
   process.env.BREVO_API_KEY
@@ -54,17 +100,20 @@ brevoClient.setApiKey(
 
 export const sendEmail = async (to, subject, html) => {
   const emailData = {
-    sender: { email: process.env.SMTP_USER, name: "Connectify" },
+    sender: { 
+      email: process.env.SMTP_USER,   // MUST be verified sender
+      name: "Connectify" 
+    },
     to: [{ email: to }],
-    subject: subject,
+    subject,
     htmlContent: html,
   };
 
   try {
     const response = await brevoClient.sendTransacEmail(emailData);
-    console.log(" Email sent successfully:", response.messageId);
+    console.log(" Email sent successfully:", response);
   } catch (error) {
-    console.error(" Email sending failed:", error.response?.body || error);
+    console.error("Brevo Email Error:", error.response?.body || error);
     throw error;
   }
 };
