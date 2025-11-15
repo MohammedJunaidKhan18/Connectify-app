@@ -4,8 +4,8 @@ import "dotenv/config.js";
 // Create reusable transporter
 const transporter = nodemailer.createTransport({
   host: "smtp-relay.brevo.com",
-  port: 465,
-  secure: true, // use true only for port 465
+  port: 587,
+  secure: false, // use true only for port 465
   auth: {
     user: process.env.SMTP_USER, // Brevo sender email
     pass: process.env.SMTP_PASS, // Brevo SMTP key
