@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .custom-chat-input .str-chat__message-input {
+    @apply w-full;
+    background-color: theme("colors.primary-content") !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .custom-chat-input .str-chat__attachment-preview-list {
+    position: absolute !important;
+    bottom: 65px !important;
+    left: 20px !important;
+    display: flex !important;
+    gap: 10px !important;
+    z-index: 50 !important;
+  }
+
+  .custom-chat-input .str-chat__attachment-preview-container {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .custom-chat-input .str-chat__message-input-inner {
+    @apply flex items-center gap-2 rounded-full bottom-0 px-4 py-2 w-full;
+    background-color: transparent !important;
+  }
+
+  .custom-chat-input .str-chat__message-textarea-container {
+    @apply rounded-full px-4 py-2 flex-1 border border-primary;
+    background-color: theme("colors.primary-content") !important;
+  }
+
+  .custom-chat-input .str-chat__message-textarea {
+    @apply w-full bg-transparent outline-none text-primary;
+    resize: none !important;
+    color: theme("colors.primary") !important;
+  }
+
+  .custom-chat-input .str-chat__message-textarea::placeholder {
+    @apply text-primary;
+  }
+
+  .emoji-btn {
+    @apply absolute text-2xl text-secondary cursor-pointer;
+    left: 22px;
+    top: 49%;
+    transform: translateY(-50%);
+    z-index: 20;
+  }
+
+  @media (max-width: 768px) {
+    .custom-chat-input .str-chat__message-input-inner {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+    }
+
+    .emoji-btn {
+      position: absolute !important;
+      left: 12px !important;
+      top: 30% !important;
+      transform: translateY(-50%) !important;
+      z-index: 30 !important;
+    }
+    @media (max-width: 768px) {
+      .emoji-picker-popup {
+        position: absolute !important;
+
+        transform: scale(0.75);
+        transform-origin: bottom left;
+
+        bottom: 110px !important;
+        left: 20 !important;
+
+        z-index: 9999 !important;
+      }
+    }
+
+    .custom-chat-input .str-chat__file-input-container {
+      margin-left: 36px !important;
+    }
+
+    .custom-chat-input .str-chat__message-textarea-container {
+      padding-left: 50px !important;
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+
+    .custom-chat-input .str-chat__send-button {
+      position: relative !important;
+      margin-left: 8px !important;
+      align-self: center !important;
+    }
+
+    .custom-chat-input .str-chat__message-textarea {
+      max-height: 60px !important;
+    }
+  }
+
+  .custom-chat-input .str-chat__file-input-container svg {
+    @apply text-primary !important;
+  }
+
+  .custom-chat-input .str-chat__file-input-container {
+    margin-left: 34px !important;
+  }
+
+  .custom-chat-input .str-chat__send-button {
+    @apply text-primary hover:text-primary !important;
+  }
+
+  .emoji-picker-popup {
+    @apply absolute left-3 bottom-16 z-50 shadow-xl rounded-xl overflow-hidden;
+  }
+}
+
+.str-chat__list-notifications {
+  margin: 0;
+  padding: 0;
+}
+
+.str-chat__main-panel,
+.str-chat__list,
+.str-chat__message-list,
+.str-chat__virtual-message-list {
+  background: linear-gradient(
+    to top,
+    theme("colors.primary-content / 1"),
+    theme("colors.secondary-content/1")
+  ) !important;
+}
+
+.chat-window-fixed {
+  height: calc(100vh - 80px - 60px - 70px);
+  overflow-y: auto !important;
+  padding-bottom: 10px;
+}
+
+.chat-input-wrapper {
+  position: fixed;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  padding: 0 12px 8px;
+  background: transparent;
+  z-index: 50;
+}
+
+/*  Animated Conic Gradient Border */
+.media-border {
+  --border-width: 3px;
+  --radius: 22px;
+
+  position: relative;
+  border-radius: var(--radius);
+  border: var(--border-width) solid transparent;
+  isolation: isolate;
+}
+
+.media-border::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--border-width) * -1);
+  z-index: -1;
+  border-radius: inherit;
+  border: inherit;
+
+  background-image: conic-gradient(
+    from var(--angle),
+    black 80%,
+    white 88%,
+    purple 92%,
+    rgb(48, 35, 191) 100%
+      /* #381D6A 80%,
+    #E0D1FF 88%,
+    #E0D1FF 92%,
+    #381D6A 100% */
+  );
+
+  background-origin: border-box;
+
+  -webkit-mask: linear-gradient(#000, #000) content-box,
+    linear-gradient(#000, #000);
+  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+
+  -webkit-mask-clip: content-box, border-box;
+  mask-clip: content-box, border-box;
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  animation: spin 3s linear infinite;
+  opacity: 0.9;
+}
+
+.media-border:hover::before {
+  animation-play-state: paused;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0turn;
+}
+
+@keyframes spin {
+  to {
+    --angle: 1turn;
+  }
+}
