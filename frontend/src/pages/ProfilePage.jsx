@@ -9,7 +9,7 @@ import {
 } from "../lib/api";
 import PageLoader from "../components/PageLoader";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Image, LogOut, Pencil, Save, X } from "lucide-react";
+import { ChevronLeft, Image, LogOut, Pencil, Save, X, Shuffle, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function ProfilePage() {
@@ -80,6 +80,9 @@ export default function ProfilePage() {
 
   const handleChangePhotoClick = () => fileInputRef.current?.click();
 
+  // -----------------------------
+  // FILE UPLOAD → CLOUDINARY
+  // -----------------------------
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -115,9 +118,51 @@ export default function ProfilePage() {
     }
   };
 
+  // -----------------------------
+  // RANDOM AVATAR GENERATOR
+  // -----------------------------
+  const handleRandomAvatar = async () => {
+    const idx = Math.floor(Math.random() * 100) + 1;
+    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
+
+    try {
+      toast.loading("Setting random avatar...", { id: "random" });
+
+      await saveUserAvatar({ url: randomAvatar, public_id: null });
+
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      toast.success("Random avatar set!", { id: "random" });
+    } catch {
+      toast.error("Failed to set avatar", { id: "random" });
+    }
+  };
+
+  // -----------------------------
+  // REMOVE PROFILE PIC
+  // -----------------------------
+  const handleRemovePhoto = async () => {
+    const idx = Math.floor(Math.random() * 100) + 1;
+    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
+
+    try {
+      toast.loading("Removing photo...", { id: "remove" });
+
+      await saveUserAvatar({
+        url: randomAvatar,
+        public_id: null,
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      toast.success("Profile photo removed!", { id: "remove" });
+    } catch {
+      toast.error("Failed to remove photo", { id: "remove" });
+    }
+  };
+
   return (
     <div className="h-[88.5vh] overflow-x-hidden w-full flex justify-center bg-gradient-to-b from-primary-content to-secondary-content">
       <div className="w-full max-w-2xl mb-4 p-2">
+        
         {/* Top Buttons */}
         <div className="w-full flex justify-between mb-5">
           <button
@@ -128,7 +173,6 @@ export default function ProfilePage() {
             Back
           </button>
 
-          {/* Edit / Save / Cancel */}
           <div>
             {edit ? (
               <div className="flex gap-4">
@@ -191,8 +235,8 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Change Photo */}
-        <div className="flex items-start justify-start">
+        {/* Change Photo + New Buttons */}
+        <div className="flex items-start justify-start gap-3">
           {edit && (
             <>
               <input
@@ -209,6 +253,22 @@ export default function ProfilePage() {
               >
                 <Image className="size-5" />
                 Change Photo
+              </button>
+
+              <button
+                className="btn btn-md btn-outline hover:btn-primary"
+                onClick={handleRandomAvatar}
+              >
+                <Shuffle className="size-5" />
+                Random
+              </button>
+
+              <button
+                className="btn btn-md btn-outline hover:btn-error"
+                onClick={handleRemovePhoto}
+              >
+                <Trash2 className="size-5" />
+                Remove
               </button>
             </>
           )}
@@ -276,7 +336,7 @@ export default function ProfilePage() {
             </p>
           </div>
 
-          {/* 🔥 Logout + Forgot Password (HIDDEN in Edit Mode) */}
+          {/* Logout Buttons */}
           {!edit && (
             <div className="flex justify-end gap-5 pt-1 mb-5">
               <button
@@ -327,3 +387,4 @@ export default function ProfilePage() {
     </div>
   );
 }
+
